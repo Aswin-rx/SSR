@@ -1,11 +1,4 @@
-[build]
-  command = "npm run build"  # Adjust if you have a custom build process
-  publish = "dist"  # Make sure this is where your built static files reside
-
-[functions]
-  directory = "netlify/functions"  # The location of your Netlify functions
-  
-[[redirects]]
+  [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
