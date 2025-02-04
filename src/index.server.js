@@ -1,6 +1,6 @@
 import express from 'express';
 import serverless from 'serverless-http';  // Import serverless-http
-import { render } from '../index';  // Import your render function
+import { render } from './index';  // Import your render function
 
 const app = express();
 const port = 3000;
