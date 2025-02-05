@@ -1,16 +1,23 @@
 import express from 'express';
-import serverless from 'serverless-http';  // Import serverless-http
-import { render } from './index';  // Import your render function
+import serverless from 'serverless-http';
+import { render } from './index';  // Import your SSR render function
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-app.use(express.static('dist'));  // Serve static files from the 'dist' folder
+app.use(express.static('dist'));  // Serve static files from 'dist'
 
 app.get('*', (req, res) => {
-  const html = render();  // Call your SSR render function
-  res.send(html);  // Send the generated HTML as the response
+  const html = render(req);  // Call your SSR render function
+  res.send(html);  // Send the generated HTML as response
 });
 
-// Wrap the Express app with serverless-http
+// Check if running in a serverless environment
+if (!process.env.IS_SERVERLESS) {
+  app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+  });
+}
+
+// Export handler for serverless platforms (like AWS Lambda)
 export const handler = serverless(app);

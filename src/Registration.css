@@ -1,176 +1,129 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
 .container {
   position: relative;
   max-width: 700px;
   width: 100%;
-  background:#fff;
+  background: #fff;
   padding: 25px;
   border-radius: 8px;
-  border:5px solid #388b6f;
+  border: 5px solid #388b6f;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  display:block;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
 }
+
 .container header {
-  font-size: 39px;
-  color: #333333;
+  font-size: 32px;
+  color: #333;
   text-align: center;
+  font-weight: 600;
 }
-.container .form {
-  margin-top: 30px;
+
+.form {
+  margin-top: 20px;
 }
-.form .input-box {
+
+.input-box {
   width: 100%;
-  margin-top: 10px;
-}
-.input-box label {
-  color: #333;
-}
-.form :where(.input-box input, .select-box) {
+  margin-bottom: 15px;
   position: relative;
-  height: 50px;
-  width: 100%;
-  outline: none;
-  font-size: 1rem;
-  color: #707070;
-  margin-top: 8px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 0 15px;
 }
-.input-box input:focus {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-}
-.form .column {
-  width: 100%;
-  margin-top: 0px;
-}
-.form .gender-box {
-  margin-top: 10px;
-}
-.gender-box h3 {
+
+.input-box label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
   color: #333;
-  font-size: 1rem;
-  font-weight: 400;
-  margin-bottom: 8px;
-}
-.form :where(.gender-option, .gender) {
-  display: flex;
-  align-items: center;
-  column-gap: 50px;
-  flex-wrap: wrap;
-}
-.form .gender {
-  column-gap: 5px;
-}
-.gender input {
-  accent-color: rgb(130, 106, 251);
-}
-.form :where(.gender input, .gender label) {
-  cursor: pointer;
-}
-.gender label {
-  color: #707070;
-}
-.address :where(input, .select-box) {
-  margin-top: 15px;
-}
-.select-box select {
-  height: 100%;
-  width: 100%;
-  outline: none;
-  border: none;
-  color: #707070;
-  font-size: 1rem;
-  border-top: 10px;
-}
-.form button {
-  height: 55px;
-  width: 100%;
-  color: black;
-  font-size: 1rem;
-  font-weight: 400;
-  margin-top: 30px;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 2px solid #388b6f;
-}
-.fa-eye{
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #707070;
-}
-.fa-eye-slash{
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #707070;
-}
-.form button:hover {
-  background-color: #388b6f;
-  color: white;
-}
-.form button:disabled {
-  background-color: #ccc;
-  color: #666;
-  cursor: not-allowed;
-  border: 2px solid #ccc;
 }
 
 .input-box input,
 .input-box select {
-  border: 1px solid #ccc;
-  padding: 10px;
   width: 100%;
-  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }
+
+.input-box input:focus,
+.input-box select:focus {
+  border-color: #388b6f;
+  outline: none;
+}
+
 .input-box.error input,
 .input-box.error select {
   border-color: red;
 }
+
 .input-box.success input,
 .input-box.success select {
   border-color: green;
 }
+
 .input-box small {
   color: red;
-  visibility: hidden;
-}
-.input-box.error small {
+  font-size: 12px;
+  position: absolute;
+  bottom: -18px;
+  left: 0;
   visibility: visible;
 }
+
 .input-box.success small {
   visibility: hidden;
 }
 
-@media screen and (max-width: 768px) {
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #707070;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #388b6f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #2f7559;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
   .container {
     padding: 20px;
     max-width: 90%;
   }
 
   .container header {
-    font-size: 30px;
+    font-size: 28px;
   }
 
-  .form button {
-    height: 50px;
-    font-size: 0.9rem;
+  button {
+    font-size: 16px;
   }
 }
 
-
-@media screen and (max-width: 480px) {
+@media (max-width: 480px) {
   .container {
     padding: 15px;
     max-width: 100%;
@@ -180,19 +133,7 @@
     font-size: 24px;
   }
 
-  .form .input-box {
-    margin-top: 8px;
-  }
-
-  .form button {
-    height: 45px;
-    font-size: 0.85rem;
-  }
-
-  .fa-eye,
-  .fa-eye-slash {
+  .password-wrapper i {
     right: 8px;
-    top: 65%; /* Adjusted for mobile alignment */
-    transform: translateY(-65%);
   }
 }

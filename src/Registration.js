@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import "./Registration.css"; // Include your CSS file
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-// Font Awesome
+import './Registration.css';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
-    phonenumber: "",
+    phoneNumber: "",
     birthdate: "",
     address1: "",
     address2: "",
@@ -19,6 +17,7 @@ const RegistrationForm = () => {
     confirmpassword: "",
   });
 
+  const [errors, setErrors] = useState({});
   const [passwordVisible, setPasswordVisible] = useState({
     createpassword: false,
     confirmpassword: false,
@@ -26,94 +25,132 @@ const RegistrationForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const togglePasswordVisibility = (field) => {
-    setPasswordVisible((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }));
+    setPasswordVisible((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  const setError = (field, message) => {
+    setErrors((prev) => ({ ...prev, [field]: message }));
+  };
+
+  const setSuccess = (field) => {
+    setErrors((prev) => ({ ...prev, [field]: "" }));
+  };
+
+  const validateField = (field) => {
+    switch (field) {
+      case "fullname":
+        const nameRegex = /^[A-Za-z\s]+$/;
+        if (!formData.fullname.trim()) setError("fullname", "Full Name is required");
+        else if (!nameRegex.test(formData.fullname)) setError("fullname", "Full Name must contain only alphabets");
+        else setSuccess("fullname");
+        break;
+
+      case "email":
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email.trim()) setError("email", "Email is required");
+        else if (!emailRegex.test(formData.email)) setError("email", "Email is not valid");
+        else setSuccess("email");
+        break;
+
+      case "phoneNumber":
+        const phoneRegex = /^\d{10}$/;
+        if (!formData.phoneNumber.trim()) setError("phoneNumber", "Phone Number is required");
+        else if (!phoneRegex.test(formData.phoneNumber)) setError("phoneNumber", "Phone Number must be 10 digits");
+        else setSuccess("phoneNumber");
+        break;
+
+      case "birthdate":
+        const today = new Date();
+        const dob = new Date(formData.birthdate.trim());
+        if (!formData.birthdate.trim()) setError("birthdate", "DOB is required");
+        else if (dob > today) setError("birthdate", "Enter a valid DOB");
+        else setSuccess("birthdate");
+        break;
+
+      case "createpassword":
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/;
+        if (!formData.createpassword.trim()) setError("createpassword", "Password is required");
+        else if (!passwordRegex.test(formData.createpassword)) setError("createpassword", "Password must be at least 6 characters long, contain one uppercase letter, one lowercase letter, one number, and one special character");
+        else setSuccess("createpassword");
+        break;
+
+      case "confirmpassword":
+        if (!formData.confirmpassword.trim()) setError("confirmpassword", "Confirm Password is required");
+        else if (formData.confirmpassword !== formData.createpassword) setError("confirmpassword", "Passwords do not match");
+        else setSuccess("confirmpassword");
+        break;
+
+      // Add more validation logic for other fields if needed...
+    }
+  };
+
+  const validateForm = () => {
+    Object.keys(formData).forEach(validateField);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log(formData);
+    validateForm();
+    if (Object.values(errors).every((err) => !err)) {
+      // Form is valid, submit the data
+      console.log("Form Submitted Successfully", formData);
+    }
   };
 
   return (
     <div className="container">
       <header>Registration Form</header>
-      <form id="form" className="form" onSubmit={handleSubmit}>
-        {[
-          { id: "fullname", type: "text", label: "Full Name" },
-          { id: "email", type: "email", label: "Email" },
-          { id: "phonenumber", type: "text", label: "Phone Number" },
-          { id: "birthdate", type: "date", label: "Date of Birth" },
-          { id: "address1", type: "text", label: "Address Line 1" },
-          { id: "address2", type: "text", label: "Address Line 2" },
-          { id: "city", type: "text", label: "City" },
-          { id: "region", type: "text", label: "Region" },
-          { id: "postalcode", type: "text", label: "Postal Code" },
-        ].map((input) => (
-          <div key={input.id} className="input-box">
-            <label htmlFor={input.id}>{input.label}</label>
+      <form onSubmit={handleSubmit}>
+        {["fullname", "email", "phoneNumber", "birthdate", "address1", "address2", "city", "region", "postalcode"].map((field) => (
+          <div key={field} className={`input-box ${errors[field] ? "error" : ""}`}>
+            <label htmlFor={field}>{field}</label>
             <input
-              type={input.type}
-              id={input.id}
-              name={input.id}
-              value={formData[input.id]}
+              type={field === "birthdate" ? "date" : "text"}
+              name={field}
+              value={formData[field]}
               onChange={handleChange}
+              onBlur={() => validateField(field)}
             />
-            <small></small>
+            <small>{errors[field]}</small>
           </div>
         ))}
 
         <div className="input-box">
           <label htmlFor="country">Country</label>
-          <select
-            id="country"
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-          >
+          <select name="country" value={formData.country} onChange={handleChange} onBlur={() => validateField("country")}>
             <option value="">Select Country</option>
             <option value="Country1">Country1</option>
             <option value="Country2">Country2</option>
           </select>
-          <small></small>
+          <small>{errors.country}</small>
         </div>
 
         {["createpassword", "confirmpassword"].map((field) => (
-          <div key={field} className="input-box" style={{ position: "relative" }}>
-            <label htmlFor={field}>
-              {field === "createpassword" ? "Create Password" : "Confirm Password"}
-            </label>
+          <div key={field} className={`input-box ${errors[field] ? "error" : ""}`} style={{ position: "relative" }}>
+            <label htmlFor={field}>{field === "createpassword" ? "Create Password" : "Confirm Password"}</label>
             <input
               type={passwordVisible[field] ? "text" : "password"}
-              id={field}
               name={field}
               value={formData[field]}
               onChange={handleChange}
+              onBlur={() => validateField(field)}
             />
             <i
-              id={`togglePassword${field}`}
               className={`fa-solid ${passwordVisible[field] ? "fa-eye" : "fa-eye-slash"}`}
               onClick={() => togglePasswordVisibility(field)}
-              style={{ cursor: "pointer" }}
             ></i>
-            <small></small>
+            <small>{errors[field]}</small>
           </div>
         ))}
 
-        <div className="input-box">
-          <button type="submit">Submit</button>
-        </div>
+        <button type="submit" disabled={Object.values(errors).some((err) => err)}>Submit</button>
       </form>
     </div>
   );
 };
 
 export default RegistrationForm;
-
