@@ -1,6 +1,6 @@
 import express from 'express';
 import serverless from 'serverless-http';
-import { render } from './index';  // Import your SSR render function
+import { render } from '../../src/index';  // Import your SSR render function
 
 const app = express();
 const port = process.env.PORT || 3000;
