@@ -31,7 +31,7 @@ module.exports = [
     mode: "development",
     target: "node",
     externals: [nodeExternals()],
-    entry: "./netlify/functions/index.server.js", // Fixed path (no semicolon)
+    entry: "./netlify/functions/index_server.js", // Fixed path (no semicolon)
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "server.js",
