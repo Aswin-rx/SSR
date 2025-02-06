@@ -59,7 +59,7 @@ const RegistrationForm = () => {
       case "phoneNumber":
         const phoneRegex = /^\d{10}$/;
         if (!formData.phoneNumber.trim()) setError("phoneNumber", "Phone Number is required");
-        else if (!phoneRegex.test(formData.phoneNumber)) setError("phoneNumber", "Phone Number must be 10 digits");
+        else if (!phoneRegex.test(formData.phoneNumber)) setError("phoneNumber", "Phone Number must be exactly 10 digits");
         else setSuccess("phoneNumber");
         break;
 
@@ -69,6 +69,26 @@ const RegistrationForm = () => {
         if (!formData.birthdate.trim()) setError("birthdate", "DOB is required");
         else if (dob > today) setError("birthdate", "Enter a valid DOB");
         else setSuccess("birthdate");
+        break;
+
+      case "address1":
+      case "address2":
+      case "region":
+      case "city":
+        if (!formData[field].trim()) setError(field, `${field} is required`);
+        else setSuccess(field);
+        break;
+
+      case "country":
+        if (!formData.country) setError("country", "Country is required");
+        else setSuccess("country");
+        break;
+
+      case "postalcode":
+        const postalRegex = /^\d+$/;
+        if (!formData.postalcode.trim()) setError("postalcode", "Postal Code is required");
+        else if (!postalRegex.test(formData.postalcode)) setError("postalcode", "Postal Code must contain only numbers");
+        else setSuccess("postalcode");
         break;
 
       case "createpassword":
@@ -83,8 +103,6 @@ const RegistrationForm = () => {
         else if (formData.confirmpassword !== formData.createpassword) setError("confirmpassword", "Passwords do not match");
         else setSuccess("confirmpassword");
         break;
-
-      // Add more validation logic for other fields if needed...
     }
   };
 
@@ -95,8 +113,8 @@ const RegistrationForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     validateForm();
+    
     if (Object.values(errors).every((err) => !err)) {
-      // Form is valid, submit the data
       console.log("Form Submitted Successfully", formData);
     }
   };
